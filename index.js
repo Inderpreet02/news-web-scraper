@@ -10,29 +10,28 @@ let categories = ["cities", "india", "latest", "offbeat", "people", "science", "
 
 // getNDTV(NDTVURL, "cities");
 
-getNDTV(NDTVURL, "cities");
-getNDTV(NDTVURL, "india");
-getNDTV(NDTVURL, "latest");
-getNDTV(NDTVURL, "offbeat");
-getNDTV(NDTVURL, "science");
-getNDTV(NDTVURL, "south");
-getNDTV(NDTVURL, "world-news");
 
-getIndiaToday(IndiaTodayURL, "india");
-getIndiaToday(IndiaTodayURL, "world");
-getIndiaToday(IndiaTodayURL, "business");
-getIndiaToday(IndiaTodayURL, "science");
-getIndiaToday(IndiaTodayURL, "health");
-getIndiaToday(IndiaTodayURL, "trending");
-getIndiaToday(IndiaTodayURL, "cryptocurrency");
-getIndiaToday(IndiaTodayURL, "cities");
-getIndiaToday(IndiaTodayURL, "crime");
-getIndiaToday(IndiaTodayURL, "binge-watch");
-getIndiaToday(IndiaTodayURL, "horoscopes");
-getIndiaToday(IndiaTodayURL, "fact-check");
-getIndiaToday(IndiaTodayURL, "data-intelligence-unit");
-
-// const job = schedule.scheduleJob("* * 0 * *", function () {
-//   getNews(URL, category);
-// });
+const job = schedule.scheduleJob("* * 0 * *", function () {
+    getNDTV(NDTVURL, "cities");
+    getNDTV(NDTVURL, "india");
+    getNDTV(NDTVURL, "latest");
+    getNDTV(NDTVURL, "offbeat");
+    getNDTV(NDTVURL, "science");
+    getNDTV(NDTVURL, "south");
+    getNDTV(NDTVURL, "world-news");
+    
+    getIndiaToday(IndiaTodayURL, "india");
+    getIndiaToday(IndiaTodayURL, "world");
+    getIndiaToday(IndiaTodayURL, "business");
+    getIndiaToday(IndiaTodayURL, "science");
+    getIndiaToday(IndiaTodayURL, "health");
+    getIndiaToday(IndiaTodayURL, "trending");
+    getIndiaToday(IndiaTodayURL, "cryptocurrency");
+    getIndiaToday(IndiaTodayURL, "cities");
+    getIndiaToday(IndiaTodayURL, "crime");
+    getIndiaToday(IndiaTodayURL, "binge-watch");
+    getIndiaToday(IndiaTodayURL, "horoscopes");
+    getIndiaToday(IndiaTodayURL, "fact-check");
+    getIndiaToday(IndiaTodayURL, "data-intelligence-unit");
+});
 
