@@ -12,7 +12,7 @@ const getNDTV = async (URL, category) => {
       const $ = cheerio.load(response.data);
       let index = 0;
 
-      $(".news_Itm").each((i, item) => {
+      $(".news_Itm").each((j, item) => {
         const $item = $(item);
         const name = $item.find("h2").text() || "";
 
@@ -25,6 +25,7 @@ const getNDTV = async (URL, category) => {
 
         const author = dateContent[0].trim() || "";
         const date = dateContent[1] || "";
+        const pageNo = i;
 
         let headLine;
 
@@ -36,6 +37,7 @@ const getNDTV = async (URL, category) => {
             author,
             imageURL,
             redirectURL,
+            pageNo,
           };
 
           news.push(headLine)

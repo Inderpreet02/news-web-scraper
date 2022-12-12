@@ -11,7 +11,7 @@ const getIndiaToday = async (URL, category) => {
       const $ = cheerio.load(response.data);
       let index = 0;
 
-      $(".catagory-listing").each((i, item) => {
+      $(".catagory-listing").each((j, item) => {
         const $item = $(item);
         const name = $item.find("h2 > a").text() || "";
 
@@ -19,11 +19,12 @@ const getIndiaToday = async (URL, category) => {
         const dateContent =
           $item.find(".posted-by").text().trim().split("|") || "";
         const imageURL = $item.find("img").attr("src") || "";
-        const redirectURL = $item.find("a").attr("href") || "";
+        const redirectURL = "https://www.indiatoday.in/" + $item.find("a").attr("href") || "";
 
         const author = dateContent[0].trim() || "IndiaToday";
         const d = new Date();
         const date = dateContent[1] || d.getFullYear()+"-"+(d.getMonth()+1)+"-"+ d;
+        const pageNo = i;
 
         let headLine;
 
@@ -35,6 +36,7 @@ const getIndiaToday = async (URL, category) => {
             author,
             imageURL,
             redirectURL,
+            pageNo,
           };
 
           news.push(headLine)

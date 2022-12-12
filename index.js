@@ -1,37 +1,93 @@
-const schedule = require("node-schedule");
 const getIndiaToday = require("./controllers/IndiaToday");
+const cors = require("cors");
+const nodemailer = require("nodemailer");
+const cron = require("node-cron");
+// const { app } = require("firebase-admin");
+const express = require("express");
+const updateNDTV = require("./services/getNDTV").default;
 const getNDTV = require("./controllers/NDTV");
+const { db } = require("./firebase");
+const app = express();
 
 const NDTVURL = "https://www.ndtv.com/";
 const IndiaTodayURL = "https://www.indiatoday.in/";
 
-
-let categories = ["cities", "india", "latest", "offbeat", "people", "science", "south", "world-news"]
+let categories = [
+  "cities",
+  "india",
+  "latest",
+  "offbeat",
+  "people",
+  "science",
+  "south",
+  "world-news",
+];
 
 // getNDTV(NDTVURL, "cities");
 
+app.use(cors());
+app.use(express.json());
 
-const job = schedule.scheduleJob("* * 0 * *", function () {
-    getNDTV(NDTVURL, "cities");
-    getNDTV(NDTVURL, "india");
-    getNDTV(NDTVURL, "latest");
-    getNDTV(NDTVURL, "offbeat");
-    getNDTV(NDTVURL, "science");
-    getNDTV(NDTVURL, "south");
-    getNDTV(NDTVURL, "world-news");
-    
-    getIndiaToday(IndiaTodayURL, "india");
-    getIndiaToday(IndiaTodayURL, "world");
-    getIndiaToday(IndiaTodayURL, "business");
-    getIndiaToday(IndiaTodayURL, "science");
-    getIndiaToday(IndiaTodayURL, "health");
-    getIndiaToday(IndiaTodayURL, "trending");
-    getIndiaToday(IndiaTodayURL, "cryptocurrency");
-    getIndiaToday(IndiaTodayURL, "cities");
-    getIndiaToday(IndiaTodayURL, "crime");
-    getIndiaToday(IndiaTodayURL, "binge-watch");
-    getIndiaToday(IndiaTodayURL, "horoscopes");
-    getIndiaToday(IndiaTodayURL, "fact-check");
-    getIndiaToday(IndiaTodayURL, "data-intelligence-unit");
+
+function mailService(email) {
+  let mailTransporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "inder192002@gmail.com",
+      // use generated app password for gmail
+      pass: "vpumilusogbtgopf",
+    },
+  });
+  
+  // setting credentials
+  let mailDetails = {
+    from: "inder192002@gmail.com",
+    to: email,
+    subject: "HAHA.",
+    text: "no but yes"
+  };
+  
+  // sending email
+  mailTransporter.sendMail(mailDetails, function (err, data) {
+    if (err) {
+      console.log("error occurred", err.message);
+    } else {
+      console.log("---------------------");
+      console.log("email sent successfully");
+    }
+  });
+}
+
+app.get("/mail/:id", (req, res) => {
+  const _id = req.params.id;
+  
+  mailService(_id);
+  
+  res.sendStatus(200)
 });
 
+var version = 1;
+async function updateVersion (){
+  var verRef = db.collection("version").doc("ver");
+
+  await verRef.set({version})
+  
+  version += 1;
+}
+
+cron.schedule("* */20 * * * *", function () {
+  updateVersion();
+  getNDTV(NDTVURL, "cities");
+  getNDTV(NDTVURL, "india");
+  getNDTV(NDTVURL, "latest");
+  getNDTV(NDTVURL, "offbeat");
+  getNDTV(NDTVURL, "science");
+  getNDTV(NDTVURL, "south");
+  getNDTV(NDTVURL, "world-news");
+  console.log("----------------");
+  console.log("running a task 20 minutes");
+});
+
+app.listen(8080, () => {
+  console.log("application listening.....");
+});
