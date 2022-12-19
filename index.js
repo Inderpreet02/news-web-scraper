@@ -28,7 +28,6 @@ let categories = [
 app.use(cors());
 app.use(express.json());
 
-
 function mailService(email) {
   let mailTransporter = nodemailer.createTransport({
     service: "gmail",
@@ -38,15 +37,15 @@ function mailService(email) {
       pass: "vpumilusogbtgopf",
     },
   });
-  
+
   // setting credentials
   let mailDetails = {
     from: "inder192002@gmail.com",
     to: email,
     subject: "HAHA.",
-    text: "no but yes"
+    text: "no but yes",
   };
-  
+
   // sending email
   mailTransporter.sendMail(mailDetails, function (err, data) {
     if (err) {
@@ -60,22 +59,22 @@ function mailService(email) {
 
 app.get("/mail/:id", (req, res) => {
   const _id = req.params.id;
-  
+
   mailService(_id);
-  
-  res.sendStatus(200)
+
+  res.sendStatus(200);
 });
 
 var version = 1;
-async function updateVersion (){
+async function updateVersion() {
   var verRef = db.collection("version").doc("ver");
 
-  await verRef.set({version})
-  
+  await verRef.set({ version });
+
   version += 1;
 }
 
-cron.schedule("* */20 * * * *", function () {
+app.get("/updatedNEWS", (req, res) => {
   updateVersion();
   getNDTV(NDTVURL, "cities");
   getNDTV(NDTVURL, "india");
@@ -84,9 +83,20 @@ cron.schedule("* */20 * * * *", function () {
   getNDTV(NDTVURL, "science");
   getNDTV(NDTVURL, "south");
   getNDTV(NDTVURL, "world-news");
-  console.log("----------------");
-  console.log("running a task 20 minutes");
 });
+
+// cron.schedule("*/5 * * * * *", function () {
+//   updateVersion();
+//   getNDTV(NDTVURL, "cities");
+//   getNDTV(NDTVURL, "india");
+//   getNDTV(NDTVURL, "latest");
+//   getNDTV(NDTVURL, "offbeat");
+//   getNDTV(NDTVURL, "science");
+//   getNDTV(NDTVURL, "south");
+//   getNDTV(NDTVURL, "world-news");
+//   console.log("----------------");
+//   console.log("running a task 20 minutes");
+// });
 
 app.listen(8080, () => {
   console.log("application listening.....");
