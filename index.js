@@ -74,6 +74,10 @@ async function updateVersion() {
   version += 1;
 }
 
+app.get("/", (req, res) => {
+  res.send("<h1> This is the work hopefully</h1>")
+})
+
 app.get("/updatedNEWS", (req, res) => {
   updateVersion();
   getNDTV(NDTVURL, "cities");
@@ -83,6 +87,8 @@ app.get("/updatedNEWS", (req, res) => {
   getNDTV(NDTVURL, "science");
   getNDTV(NDTVURL, "south");
   getNDTV(NDTVURL, "world-news");
+
+  res.send("<h1> is work</h1>")
 });
 
 // cron.schedule("*/5 * * * * *", function () {
@@ -99,5 +105,5 @@ app.get("/updatedNEWS", (req, res) => {
 // });
 
 app.listen(8080, () => {
-  console.log("application listening.....");
+  console.log(`application listening at http://localhost:${8080}`);
 });
